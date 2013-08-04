@@ -20,8 +20,12 @@
 #include <stddef.h>
 #include <assert.h>
 #include <inttypes.h>
+
 #include "trema.h"
+#include "jansson.h"
 #include "simple_restapi_manager.h"
+
+#include "ticker.h"
 
 
 static void
@@ -37,30 +41,59 @@ handle_query_accts_restapi( const struct mg_request_info *request_info, void *re
 //  const struct mg_connection * conn = (struct mg_connection*)(request_info - ((struct mg_connection*)0)->request_info);
 // const struct mg_connection *conn = request_info - offsetof(struct mg_connection, request_info); 
   json_t *json;
-  jsont_error_t error;
-  const char *user, *pass, *broker, *front;
-  json = json_loads(request_data, 0, &error);
+  json_error_t error;
+  char *user, *pass, *broker, *front;
+  json = json_loads((char*)request_data, 0, &error);
   if( json ) {
     json_unpack(json, "{s:s, s:s, s:s, s:s}", "username", &user, "password", &pass, "broker", &broker, "front", &front);
   }
  
- while(true) {
-   switch(1) {
-     case 1:
-         break;
-     case 2:
-         break;
-     default:
-         break;   
-   }
- }
-
- return (char*)request_data;
+  return get_account_info(front, broker, user, pass);
 }
 
 static char *
-handle_query_test2_restapi( const struct mg_request_info *request_info, void *request_data ) {
-  return "It is from test2 rest api...";
+handle_query_position_restapi( const struct mg_request_info *request_info, void *request_data ) {
+//  const struct mg_connection * conn = (struct mg_connection*)(request_info - ((struct mg_connection*)0)->request_info);
+// const struct mg_connection *conn = request_info - offsetof(struct mg_connection, request_info); 
+  json_t *json;
+  json_error_t error;
+  char *user, *pass, *broker, *front;
+  json = json_loads((char*)request_data, 0, &error);
+  if( json ) {
+    json_unpack(json, "{s:s, s:s, s:s, s:s}", "username", &user, "password", &pass, "broker", &broker, "front", &front);
+  }
+ 
+  return get_position_info(front, broker, user, pass);
+}
+
+static char *
+handle_order_insert_restapi( const struct mg_request_info *request_info, void *request_data ) {
+  json_t *json;
+  json_error_t error;
+  char *user, *pass, *broker, *front;
+  char *instrument, *price, *director, *offset, *volume;
+
+  json = json_loads((char*)request_data, 0, &error);
+  if( json ) {
+    json_unpack(json, "{s:s, s:s, s:s, s:s}", "username", &user, "password", &pass, "broker", &broker, "front", &front);
+  }
+ 
+  return order_insert(instrument, price, director, offset, volume, front, broker, user, pass);
+}
+
+static char *
+handle_order_delete_restapi( const struct mg_request_info *request_info, void *request_data ) {
+  json_t *json;
+  json_error_t error;
+  char *user, *pass, *broker, *front;
+  char *instrument, *session, *frontid, *orderref;
+
+  json = json_loads((char*)request_data, 0, &error);
+  if( json ) {
+    json_unpack(json, "{s:s, s:s, s:s, s:s}", "username", &user, "password", &pass, "broker", &broker, "front", &front);
+  }
+ 
+  return order_delete(instrument, session, frontid, orderref, front, broker, user, pass);
 }
 /***************************************************/
 
@@ -79,7 +112,7 @@ main( int argc, char *argv[] ) {
   
   /*** Add your REST API ***/
   add_restapi_url( "^/api/1/accts$", "GET", handle_query_accts_restapi );
-  add_restapi_url( "^/api/1/def$", "GET", handle_query_test2_restapi );
+  add_restapi_url( "^/api/1/position$", "GET", handle_query_position_restapi );
   /*************************/
   
   /* Set switch ready handler */

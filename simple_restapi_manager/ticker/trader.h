@@ -1,15 +1,15 @@
 /*
 ** Copyright (C) QPSOFT.COM All rights reserved.
 */
-#ifndef TRADE_H
-#define TRADE_H
-
-#include "ThostFtdcTraderApi.h"
+#ifndef TRADER_H
+#define TRADER_H
 
 #include	<stdio.h>
 #include	<string.h>
 #include	<iostream>
 #include	<map>
+
+#include "ThostFtdcTraderApi.h"
 
 using namespace std;
 
@@ -282,7 +282,7 @@ public:
 	
 	CThostFtdcTraderApi* pUserApi;
 
-	void ReqConnect(char* f, const char* b, const char* u, char* p);
+	void ReqConnect(const char* f, const char* b, const char* u, const char* p);
 
 	//报单-限价
 	int ReqOrderInsert(const char* instrument, double price, int director, int offset, int volume);

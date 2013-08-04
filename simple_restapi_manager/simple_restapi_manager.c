@@ -33,7 +33,7 @@
 
 /* This variable is for putting the url mapping data into here */
 url_mapping_table url_mapping_db = { NULL };
-const char *options[] = {"listening_ports", "8080", NULL};
+const char *options[] = {"listening_ports", "24", NULL};
 
 static struct mg_context *ctx = NULL;
 static struct mg_callbacks callbacks;
@@ -65,7 +65,10 @@ static int *mongoose_callback( struct mg_connection *conn )
         if( strcmp( request_info->request_method , 
                 url_mapping_data->method ) == 0 ) { 
           /* Match the REST API */
-          ret_strings = ( *url_mapping_data->restapi_requested_callback )( request_info, NULL );
+	  char post_data[1024];
+	  int  post_data_len;
+	  post_data_len = mg_read(conn, post_data, sizeof(post_data));
+          ret_strings = ( *url_mapping_data->restapi_requested_callback )( request_info, post_data );
         }
         else {
           info( "REST API not found \n" );
