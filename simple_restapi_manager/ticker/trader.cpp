@@ -1,4 +1,5 @@
 
+
 #include	<iostream>
 #include	<unistd.h>
 #include	"trader.h"
@@ -342,8 +343,17 @@ void Trade::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField* pInvestorP
 	{
 	}
 
-	if(bIsLast)
-	{
+	if (bIsLast) {
+	cJSON	*root;
+	char	*out;
+	root = cJSON_CreateObject();
+	cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
+	
+	out = cJSON_Print(root);
+	memcpy(buffer, out, strlen(out));
+	cJSON_Delete(root);
+	free(out);
+		printf("@%s", __FUNCTION__);
 		isdone = 1;
 	}
 }
@@ -353,6 +363,16 @@ void Trade::OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField
 	CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (bIsLast) {
+	cJSON	*root;
+	char	*out;
+	root = cJSON_CreateObject();
+	cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
+	
+	out = cJSON_Print(root);
+	memcpy(buffer, out, strlen(out));
+	cJSON_Delete(root);
+	free(out);
+		printf("@%s", __FUNCTION__);
 		isdone = 1;
 	}
 }
@@ -389,31 +409,11 @@ void Trade::OnRspQryTradingAccount(CThostFtdcTradingAccountField* pTradingAccoun
 //报单响应
 void Trade::OnRtnOrder(CThostFtdcOrderField* pOrder)
 {
-	cJSON	*root;
-	char	*out;
-	root = cJSON_CreateObject();
-	cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
-	
-	out = cJSON_Print(root);
-	memcpy(buffer, out, strlen(out));
-	cJSON_Delete(root);
-	free(out);
-	isdone = 1;
 }
 
 //成交响应
 void Trade::OnRtnTrade(CThostFtdcTradeField* pTrade)
 {
-	cJSON	*root;
-	char	*out;
-	root = cJSON_CreateObject();
-	cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
-	
-	out = cJSON_Print(root);
-	memcpy(buffer, out, strlen(out));
-	cJSON_Delete(root);
-	free(out);
-	isdone = 1;
 	//show(str(//boost::format("成交编号:%1%, 平台编号%2%, 成交时间%3%")%pTradeID %pBrokerOrderSeq %pTradeTime), 2);
 }
 
@@ -421,6 +421,16 @@ void Trade::OnRtnTrade(CThostFtdcTradeField* pTrade)
 void Trade::OnRspOrderInsert(CThostFtdcInputOrderField* pInputOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (bIsLast) {
+	cJSON	*root;
+	char	*out;
+	root = cJSON_CreateObject();
+	cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
+	
+	out = cJSON_Print(root);
+	memcpy(buffer, out, strlen(out));
+	cJSON_Delete(root);
+	free(out);
+		printf("@%s", __FUNCTION__);
 		isdone = 1;
 	}
 	//show(pRspInfo->ErrorMsg, 2);
@@ -436,8 +446,20 @@ void Trade::OnErrRtnOrderInsert(CThostFtdcInputOrderField* pInputOrder, CThostFt
 //撤单错误
 void Trade::OnRspOrderAction(CThostFtdcInputOrderActionField* pInputOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
+	if (bIsLast) {
+	cJSON	*root;
+	char	*out;
+	root = cJSON_CreateObject();
+	cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
+	
+	out = cJSON_Print(root);
+	memcpy(buffer, out, strlen(out));
+	cJSON_Delete(root);
+	free(out);
+		printf("@%s", __FUNCTION__);
+		isdone = 1;
+	}
 	//show(pRspInfo->ErrorMsg, 2);
-	isdone = 1;
 }
 
 //签约银行
@@ -760,7 +782,7 @@ void Trade::ReqLogin( )
 	pUserApi->ReqUserLogin(&req, ++iReqID);
 }
 
-void Trade::ReqConnect(char* f, const char* b, const char* u, char* p)
+void Trade::ReqConnect(const char* f, const char* b, const char* u, const char* p)
 {
 	pUserApi = CThostFtdcTraderApi::CreateFtdcTraderApi(u);
 	pUserApi->RegisterSpi((CThostFtdcTraderSpi*)this);
@@ -773,7 +795,7 @@ void Trade::ReqConnect(char* f, const char* b, const char* u, char* p)
 	strcpy(investor, u);
 	strcpy(password, p);
 
-	pUserApi->RegisterFront(f);
+	pUserApi->RegisterFront((char*)f);
 	pUserApi->Init();
 	fprintf(stderr, "@%s\n", __FUNCTION__);
 }

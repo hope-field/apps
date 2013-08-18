@@ -72,7 +72,7 @@ traderproxy::get_account_info(const char* f, const char* b, const char* u, const
 
 	while(t->status < 2) {}
 
-	t->ReqQryTradingAccount();
+	int ret = t->ReqQryTradingAccount();
 
 	while (!t->isdone) {}
 
@@ -117,7 +117,7 @@ traderproxy::order_insert(const char* instrument, const char* price, const char*
 
 	while(t->status < 2) {}
 
-	t->ReqOrderInsert(instrument, atof(price), atoi(director), atoi(offset), atoi(volume));
+	int ret = t->ReqOrderInsert(instrument, atof(price), atoi(director), atoi(offset), atoi(volume));
 
 	while (!t->isdone) {}
 

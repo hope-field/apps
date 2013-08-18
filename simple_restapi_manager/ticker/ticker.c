@@ -42,10 +42,12 @@ handle_query_accts_restapi( const struct mg_request_info *request_info, void *re
 // const struct mg_connection *conn = request_info - offsetof(struct mg_connection, request_info); 
   json_t *json;
   json_error_t error;
-  char *user, *pass, *broker, *front;
+  char user[32], *pass, *broker, *front;
+  sscanf(request_info->uri, "/api/1/accts/%s", user);
+  fprintf(stderr, "user = %s", user);
   json = json_loads((char*)request_data, 0, &error);
   if( json ) {
-    json_unpack(json, "{s:s, s:s, s:s, s:s}", "username", &user, "password", &pass, "broker", &broker, "front", &front);
+    json_unpack(json, "{s:s, s:s, s:s, s:s}", "password", &pass, "broker", &broker, "front", &front);
   }
  
   return get_account_info(front, broker, user, pass);
@@ -75,9 +77,11 @@ handle_order_insert_restapi( const struct mg_request_info *request_info, void *r
 
   json = json_loads((char*)request_data, 0, &error);
   if( json ) {
-    json_unpack(json, "{s:s, s:s, s:s, s:s}", "username", &user, "password", &pass, "broker", &broker, "front", &front);
+    json_unpack(json, "{s:s, s:s, s:s, s:s, s:s, s:s, s:s, s:s, s:s}", "username", &user, "password", &pass,
+	 "broker", &broker, "front", &front, "instrument", &instrument, "price", &price, "director", &director,
+	"offset",  &offset, "volume", &volume);
   }
- 
+
   return order_insert(instrument, price, director, offset, volume, front, broker, user, pass);
 }
 
@@ -90,7 +94,7 @@ handle_order_delete_restapi( const struct mg_request_info *request_info, void *r
 
   json = json_loads((char*)request_data, 0, &error);
   if( json ) {
-    json_unpack(json, "{s:s, s:s, s:s, s:s}", "username", &user, "password", &pass, "broker", &broker, "front", &front);
+    json_unpack(json, "{s:s, s:s, s:s, s:s, s:s, s:s, s:s, s:s}", "username", &user, "password", &pass, "broker", &broker, "front", &front, "instrument", &instrument, "session", &session, "frontid", &frontid, "orderref", &orderref);
   }
  
   return order_delete(instrument, session, frontid, orderref, front, broker, user, pass);
@@ -111,8 +115,10 @@ main( int argc, char *argv[] ) {
   start_restapi_manager();
   
   /*** Add your REST API ***/
-  add_restapi_url( "^/api/1/accts$", "GET", handle_query_accts_restapi );
-  add_restapi_url( "^/api/1/position$", "GET", handle_query_position_restapi );
+  add_restapi_url( "^/api/1/accts/", "GET", handle_query_accts_restapi );
+  add_restapi_url( "^/api/1/position", "GET", handle_query_position_restapi );
+  add_restapi_url( "^/api/1/order", "POST", handle_order_insert_restapi );
+  add_restapi_url( "^/api/1/order", "DELETE", handle_order_delete_restapi );
   /*************************/
   
   /* Set switch ready handler */

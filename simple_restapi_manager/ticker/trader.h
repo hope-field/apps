@@ -8,6 +8,7 @@
 #include	<string.h>
 #include	<iostream>
 #include	<map>
+#include	<list>
 
 #include "ThostFtdcTraderApi.h"
 
@@ -278,7 +279,7 @@ public:
 	int orderRef;
 	char		buffer[1024];
 	volatile	int	status;
-	volatile	int isdone;
+	volatile	int 	isdone;
 	
 	CThostFtdcTraderApi* pUserApi;
 
@@ -307,7 +308,9 @@ public:
 public:
 
 	bool	isReady() { return m_isready; }
-
+private:
+	list<CThostFtdcOrderField *>	orders;
+	list<CThostFtdcTradeField *>	trades;
 private:
 	int		addrID;
 	bool	m_isready;

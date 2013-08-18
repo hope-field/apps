@@ -20,7 +20,7 @@ LDFLAGS = -L/var/lib/gems/1.8/gems/trema-0.3.20/objects/lib -lstdc++ -ljansson -
 TARGET = ticker
 SRCS = ticker.c cJSON.c 
 TSRCS = trader.cpp traderproxy.cpp
-OBJS = $(SRCS:.c=.o) $(TSRCS:.cpp=.o) thosttraderapi.so
+OBJS = $(SRCS:.c=.o) $(TSRCS:.cpp=.o)
 
 DEPENDS = .depends
 
@@ -31,12 +31,12 @@ DEPENDS = .depends
 all: depend $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(OBJS) $(LDFLAGS) -o $@
+	$(CC) $(OBJS) thosttraderapi.so $(LDFLAGS) -o $@
 
 .cpp.o:
 	$(CXX) $(CFLAGS) -c $<
 .c.o:
-	$(CC) $(CFLAGS) -c $<
+	$(CC) -std=gnu99 $(CFLAGS) -c $<
 tick:
 	$(CC) $(CFLAGS) -Wunused-parameter $(LDFLAGS) $(SRCS) $(TSRCS) thosttraderapi.so -o ticker
 depend:
