@@ -309,8 +309,8 @@ public:
 
 	bool	isReady() { return m_isready; }
 private:
-	vector<CThostFtdcOrderField *>	orders;
-	vector<CThostFtdcTradeField *>	trades;
+	vector<CThostFtdcOrderField *>	orderList;
+	vector<CThostFtdcTradeField *>	tradeList;
 private:
 	int		addrID;
 	bool	m_isready;
@@ -323,6 +323,8 @@ private:
 
 	bool IsErrorRspInfo(CThostFtdcRspInfoField* pRspInfo);
 	void ReqLogin( );
+	void PrintOrders();
+	void PrintTrades();
 
 };
 
