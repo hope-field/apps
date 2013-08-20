@@ -409,12 +409,31 @@ void Trade::OnRspQryTradingAccount(CThostFtdcTradingAccountField* pTradingAccoun
 //报单响应
 void Trade::OnRtnOrder(CThostFtdcOrderField* pOrder)
 {
+  CThostFtdcOrderField* order = new CThostFtdcOrderField();
+  memcpy(order,  pOrder, sizeof(CThostFtdcOrderField));
+  bool founded=false;    unsigned int i=0;
+  for(i=0; i<orderList.size(); i++){
+    if(orderList[i]->BrokerOrderSeq == order->BrokerOrderSeq) {
+      founded=true;    break;
+    }
+  }
+  if(founded) orderList[i]= order;   
+  else  orderList.push_back(order);
 }
 
 //成交响应
 void Trade::OnRtnTrade(CThostFtdcTradeField* pTrade)
 {
-	//show(str(//boost::format("成交编号:%1%, 平台编号%2%, 成交时间%3%")%pTradeID %pBrokerOrderSeq %pTradeTime), 2);
+ CThostFtdcTradeField* trade = new CThostFtdcTradeField();
+  memcpy(trade,  pTrade, sizeof(CThostFtdcTradeField));
+  bool founded=false;     unsigned int i=0;
+  for(i=0; i<tradeList.size(); i++){
+    if(tradeList[i]->TradeID == trade->TradeID) {
+      founded=true;   break;
+    }
+  }
+  if(founded) tradeList[i] = trade;   
+  else  tradeList.push_back(trade);	//show(str(//boost::format("成交编号:%1%, 平台编号%2%, 成交时间%3%")%pTradeID %pBrokerOrderSeq %pTradeTime), 2);
 }
 
 //报单错误
