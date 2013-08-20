@@ -94,7 +94,8 @@ traderproxy::get_position_info(const char* f, const char* b, const char* u, cons
 
 	while(t->status < 2) {}
 
-	t->ReqQryInvestorPosition();
+	int ret = t->ReqQryInvestorPosition();
+	fprintf(stderr, "@%s\n", __FUNCTION__);
 
 	while (!t->isdone) {}
 

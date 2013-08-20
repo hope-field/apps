@@ -353,7 +353,7 @@ void Trade::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField* pInvestorP
 	memcpy(buffer, out, strlen(out));
 	cJSON_Delete(root);
 	free(out);
-		printf("@%s", __FUNCTION__);
+		cerr<<"@"<< __FUNCTION__ << endl;
 		isdone = 1;
 	}
 }

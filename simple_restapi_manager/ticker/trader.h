@@ -8,7 +8,7 @@
 #include	<string.h>
 #include	<iostream>
 #include	<map>
-#include	<list>
+#include	<vector>
 
 #include "ThostFtdcTraderApi.h"
 
@@ -309,8 +309,8 @@ public:
 
 	bool	isReady() { return m_isready; }
 private:
-	list<CThostFtdcOrderField *>	orders;
-	list<CThostFtdcTradeField *>	trades;
+	vector<CThostFtdcOrderField *>	orders;
+	vector<CThostFtdcTradeField *>	trades;
 private:
 	int		addrID;
 	bool	m_isready;

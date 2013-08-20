@@ -44,7 +44,7 @@ handle_query_accts_restapi( const struct mg_request_info *request_info, void *re
   json_error_t error;
   char user[32], *pass, *broker, *front;
   sscanf(request_info->uri, "/api/1/accts/%s", user);
-  fprintf(stderr, "user = %s", user);
+//  fprintf(stderr, "user = %s", user);
   json = json_loads((char*)request_data, 0, &error);
   if( json ) {
     json_unpack(json, "{s:s, s:s, s:s, s:s}", "password", &pass, "broker", &broker, "front", &front);
