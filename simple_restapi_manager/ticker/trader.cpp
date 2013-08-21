@@ -829,11 +829,11 @@ bool Trade::IsErrorRspInfo(CThostFtdcRspInfoField* pRspInfo)
 		return bResult;
 	}
 
-void CtpTraderSpi::PrintOrders(){
+void Trade::PrintOrders(){
   CThostFtdcOrderField* pOrder; 
   for(unsigned int i=0; i<orderList.size(); i++){
     pOrder = orderList[i];
-    cerr<<" 报单 | 合约:"<<pOrder->InstrumentID
+/*    cerr<<" 报单 | 合约:"<<pOrder->InstrumentID
       <<" 方向:"<<MapDirection(pOrder->Direction,false)
       <<" 开平:"<<MapOffset(pOrder->CombOffsetFlag[0],false)
       <<" 价格:"<<pOrder->LimitPrice
@@ -841,20 +841,18 @@ void CtpTraderSpi::PrintOrders(){
       <<" 序号:"<<pOrder->BrokerOrderSeq 
       <<" 报单编号:"<<pOrder->OrderSysID
       <<" 状态:"<<pOrder->StatusMsg<<endl;
-  }
-  SetEvent(g_hEvent);
+*/  }
 }
-void CtpTraderSpi::PrintTrades(){
+void Trade::PrintTrades(){
   CThostFtdcTradeField* pTrade;
   for(unsigned int i=0; i<tradeList.size(); i++){
     pTrade = tradeList[i];
-    cerr<<" 成交 | 合约:"<< pTrade->InstrumentID 
+/*    cerr<<" 成交 | 合约:"<< pTrade->InstrumentID 
       <<" 方向:"<<MapDirection(pTrade->Direction,false)
       <<" 开平:"<<MapOffset(pTrade->OffsetFlag,false) 
       <<" 价格:"<<pTrade->Price
       <<" 数量:"<<pTrade->Volume
       <<" 报单编号:"<<pTrade->OrderSysID
       <<" 成交编号:"<<pTrade->TradeID<<endl;
-  }
-  SetEvent(g_hEvent);
+*/  }
 }

@@ -40,14 +40,15 @@ static char *
 handle_query_accts_restapi( const struct mg_request_info *request_info, void *request_data ) {
 //  const struct mg_connection * conn = (struct mg_connection*)(request_info - ((struct mg_connection*)0)->request_info);
 // const struct mg_connection *conn = request_info - offsetof(struct mg_connection, request_info); 
-  json_t *json;
+  json_t *json;char *p;
   json_error_t error;
-  char user[32], *pass, *broker, *front;
-  sscanf(request_info->uri, "/api/1/accts/%s", user);
-//  fprintf(stderr, "user = %s", user);
+  char user[32], *pass, *broker[32], *front;
+  while((p = strchr(request_info->uri, '/'))) { *p = ' ';}
+  sscanf(request_info->uri, " api 1 brokers %s accts %s", broker, user);
+  fprintf(stderr, "user = %s, broker = %s\n", user, broker);
   json = json_loads((char*)request_data, 0, &error);
   if( json ) {
-    json_unpack(json, "{s:s, s:s, s:s, s:s}", "password", &pass, "broker", &broker, "front", &front);
+    json_unpack(json, "{s:s, s:s, s:s, s:s}", "password", &pass, "front", &front);
   }
  
   return get_account_info(front, broker, user, pass);
@@ -101,7 +102,6 @@ handle_order_delete_restapi( const struct mg_request_info *request_info, void *r
 }
 /***************************************************/
 
-
 int
 main( int argc, char *argv[] ) {
   
@@ -115,10 +115,12 @@ main( int argc, char *argv[] ) {
   start_restapi_manager();
   
   /*** Add your REST API ***/
-  add_restapi_url( "^/api/1/accts/", "GET", handle_query_accts_restapi );
-  add_restapi_url( "^/api/1/position", "GET", handle_query_position_restapi );
-  add_restapi_url( "^/api/1/order", "POST", handle_order_insert_restapi );
-  add_restapi_url( "^/api/1/order", "DELETE", handle_order_delete_restapi );
+  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+", "GET", handle_query_accts_restapi );
+  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+/position", "GET", handle_query_position_restapi );
+  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+/orders", "POST", handle_order_insert_restapi );
+  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+/orders/[0-9]+", "DELETE", handle_order_delete_restapi );
+  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+/orders", "GET", handle_order_delete_restapi );
+  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+/trades", "GET", handle_order_delete_restapi );
   /*************************/
   
   /* Set switch ready handler */
