@@ -115,12 +115,12 @@ main( int argc, char *argv[] ) {
   start_restapi_manager();
   
   /*** Add your REST API ***/
-  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+", "GET", handle_query_accts_restapi );
-  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+/position", "GET", handle_query_position_restapi );
-  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+/orders", "POST", handle_order_insert_restapi );
-  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+/orders/[0-9]+", "DELETE", handle_order_delete_restapi );
-  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+/orders", "GET", handle_order_delete_restapi );
-  add_restapi_url( "^/api/1/brokers/[0-9]+/accts/[0-9]+/trades", "GET", handle_order_delete_restapi );
+  add_restapi_url( "^/api/v1/brokers/[0-9]+/accts/[0-9]+", "GET", handle_query_accts_restapi );
+  add_restapi_url( "^/api/v1/brokers/[0-9]+/accts/[0-9]+/position", "GET", handle_query_position_restapi );
+  add_restapi_url( "^/api/v1/brokers/[0-9]+/accts/[0-9]+/orders", "POST", handle_order_insert_restapi );
+  add_restapi_url( "^/api/v1/brokers/[0-9]+/accts/[0-9]+/orders/[0-9]+", "DELETE", handle_order_delete_restapi );
+  add_restapi_url( "^/api/v1/brokers/[0-9]+/accts/[0-9]+/orders", "GET", handle_order_delete_restapi );
+  add_restapi_url( "^/api/v1/brokers/[0-9]+/accts/[0-9]+/trades", "GET", handle_order_delete_restapi );
   /*************************/
   
   /* Set switch ready handler */

@@ -149,6 +149,64 @@ traderproxy::order_delete(const char *instrument, const char *session, const cha
 }
 
 const char*
+traderproxy::show_orders(const char *f, const char* b, const char *u,const char* p)
+{
+	Trade*	t = find_trader(u);
+
+	if (!t) {
+		t = create_trader(f, b, u, p);
+		if(!t) return NULL;
+	}
+
+	t->isdone = 0;
+	memset(t->buffer, 0, sizeof(t->buffer));
+
+	while(t->status < 2) {}
+
+	int ret = t->ShowOrders();
+	fprintf(stderr, "@%s\n", __FUNCTION__);
+
+	while (!t->isdone) {}
+
+	return t->buffer;
+}
+
+const char*
+traderproxy::show_trades(const char *f, const char* b, const char *u,const char* p)
+{
+	Trade*	t = find_trader(u);
+
+	if (!t) {
+		t = create_trader(f, b, u, p);
+		if(!t) return NULL;
+	}
+
+	t->isdone = 0;
+	memset(t->buffer, 0, sizeof(t->buffer));
+
+	while(t->status < 2) {}
+
+	int ret = t->ShowTrades();
+	fprintf(stderr, "@%s\n", __FUNCTION__);
+
+	while (!t->isdone) {}
+
+	return t->buffer;
+}
+
+const char*
+show_orders(const char *f, const char *b, const char *u, const char* p)
+{
+	return g_ticker.show_orders(f, b, u, p);
+}
+
+const char*
+show_trades(const char *f, const char *b, const char *u, const char* p)
+{
+	return g_ticker.show_trades(f, b, u, p);
+}
+
+const char*
 get_account_info(const char *f, const char *b, const char *u, const char* p)
 {
 	return g_ticker.get_account_info(f, b, u, p);

@@ -247,7 +247,7 @@ void Trade::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin,
 		memset(&req, 0, sizeof(req));
 		strcpy(req.BrokerID, broker);
 		strcpy(req.InvestorID, investor);
-	        cerr<<__FUNCTION__<<endl;
+//	        cerr<<__FUNCTION__<<endl;
 		status = 3;
 //		int ret = pUserApi->ReqQrySettlementInfoConfirm(&req, ++iReqID);
 	}
@@ -344,15 +344,15 @@ void Trade::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField* pInvestorP
 	}
 
 	if (bIsLast) {
-	cJSON	*root;
-	char	*out;
-	root = cJSON_CreateObject();
-	cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
-	
-	out = cJSON_Print(root);
-	memcpy(buffer, out, strlen(out));
-	cJSON_Delete(root);
-	free(out);
+		cJSON	*root;
+		char	*out;
+		root = cJSON_CreateObject();
+		cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
+		
+		out = cJSON_Print(root);
+		memcpy(buffer, out, strlen(out));
+		cJSON_Delete(root);
+		free(out);
 		cerr<<"@"<< __FUNCTION__ << endl;
 		isdone = 1;
 	}
@@ -363,15 +363,15 @@ void Trade::OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField
 	CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (bIsLast) {
-	cJSON	*root;
-	char	*out;
-	root = cJSON_CreateObject();
-	cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
-	
-	out = cJSON_Print(root);
-	memcpy(buffer, out, strlen(out));
-	cJSON_Delete(root);
-	free(out);
+		cJSON	*root;
+		char	*out;
+		root = cJSON_CreateObject();
+		cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
+		
+		out = cJSON_Print(root);
+		memcpy(buffer, out, strlen(out));
+		cJSON_Delete(root);
+		free(out);
 		printf("@%s", __FUNCTION__);
 		isdone = 1;
 	}
@@ -440,15 +440,15 @@ void Trade::OnRtnTrade(CThostFtdcTradeField* pTrade)
 void Trade::OnRspOrderInsert(CThostFtdcInputOrderField* pInputOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (bIsLast) {
-	cJSON	*root;
-	char	*out;
-	root = cJSON_CreateObject();
-	cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
-	
-	out = cJSON_Print(root);
-	memcpy(buffer, out, strlen(out));
-	cJSON_Delete(root);
-	free(out);
+		cJSON	*root;
+		char	*out;
+		root = cJSON_CreateObject();
+		cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
+		
+		out = cJSON_Print(root);
+		memcpy(buffer, out, strlen(out));
+		cJSON_Delete(root);
+		free(out);
 		printf("@%s", __FUNCTION__);
 		isdone = 1;
 	}
@@ -466,15 +466,15 @@ void Trade::OnErrRtnOrderInsert(CThostFtdcInputOrderField* pInputOrder, CThostFt
 void Trade::OnRspOrderAction(CThostFtdcInputOrderActionField* pInputOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (bIsLast) {
-	cJSON	*root;
-	char	*out;
-	root = cJSON_CreateObject();
-	cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
-	
-	out = cJSON_Print(root);
-	memcpy(buffer, out, strlen(out));
-	cJSON_Delete(root);
-	free(out);
+		cJSON	*root;
+		char	*out;
+		root = cJSON_CreateObject();
+		cJSON_AddItemToObject(root, "return", cJSON_CreateString("sucess"));
+		
+		out = cJSON_Print(root);
+		memcpy(buffer, out, strlen(out));
+		cJSON_Delete(root);
+		free(out);
 		printf("@%s", __FUNCTION__);
 		isdone = 1;
 	}
@@ -829,7 +829,7 @@ bool Trade::IsErrorRspInfo(CThostFtdcRspInfoField* pRspInfo)
 		return bResult;
 	}
 
-void Trade::PrintOrders(){
+void Trade::ShowOrders(){
   CThostFtdcOrderField* pOrder; 
   for(unsigned int i=0; i<orderList.size(); i++){
     pOrder = orderList[i];
@@ -843,7 +843,7 @@ void Trade::PrintOrders(){
       <<" ״̬:"<<pOrder->StatusMsg<<endl;
 */  }
 }
-void Trade::PrintTrades(){
+void Trade::ShowTrades(){
   CThostFtdcTradeField* pTrade;
   for(unsigned int i=0; i<tradeList.size(); i++){
     pTrade = tradeList[i];

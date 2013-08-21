@@ -323,8 +323,8 @@ private:
 
 	bool IsErrorRspInfo(CThostFtdcRspInfoField* pRspInfo);
 	void ReqLogin( );
-	void PrintOrders();
-	void PrintTrades();
+	void ShowOrders();
+	void ShowTrades();
 
 };
 

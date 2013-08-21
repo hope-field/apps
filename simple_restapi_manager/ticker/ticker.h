@@ -8,6 +8,10 @@ extern "C" {
 const char*
 get_account_info(const char*, const char*, const char*, const char*);
 const char*
+show_orders(const char*, const char*, const char*, const char*);
+const char*
+show_trades(const char*, const char*, const char*, const char*);
+const char*
 get_position_info(const char*, const char*, const char*, const char*);
 const char*
 order_insert(const char* instrument, const char* price,const char *director, const char *offset, const char *volume
