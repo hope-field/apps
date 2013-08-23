@@ -829,7 +829,7 @@ bool Trade::IsErrorRspInfo(CThostFtdcRspInfoField* pRspInfo)
 		return bResult;
 	}
 
-void Trade::ShowOrders(){
+int Trade::ShowOrders(){
   CThostFtdcOrderField* pOrder; 
   for(unsigned int i=0; i<orderList.size(); i++){
     pOrder = orderList[i];
@@ -842,8 +842,9 @@ void Trade::ShowOrders(){
       <<" 报单编号:"<<pOrder->OrderSysID
       <<" 状态:"<<pOrder->StatusMsg<<endl;
 */  }
+   return 1;
 }
-void Trade::ShowTrades(){
+int Trade::ShowTrades(){
   CThostFtdcTradeField* pTrade;
   for(unsigned int i=0; i<tradeList.size(); i++){
     pTrade = tradeList[i];
@@ -855,4 +856,5 @@ void Trade::ShowTrades(){
       <<" 报单编号:"<<pTrade->OrderSysID
       <<" 成交编号:"<<pTrade->TradeID<<endl;
 */  }
+   return 1;
 }

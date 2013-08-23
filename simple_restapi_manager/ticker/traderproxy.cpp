@@ -33,10 +33,6 @@ int	traderproxy::remove_trader(const char* u)
 	//return earse(u);
 }
 
-void traderproxy::show_traders ()
-{
-}
-
 Trade*	traderproxy::find_trader(const char *u)
 {
     Trade	*t = NULL;

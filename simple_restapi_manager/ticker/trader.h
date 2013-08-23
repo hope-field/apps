@@ -307,6 +307,8 @@ public:
 	int ReqTransferByFuture(const char* bankID, const char* bankPWD, const char* accountPWD, double amount, bool f2B);
 public:
 
+	int ShowOrders();
+	int ShowTrades();
 	bool	isReady() { return m_isready; }
 private:
 	vector<CThostFtdcOrderField *>	orderList;
@@ -323,8 +325,6 @@ private:
 
 	bool IsErrorRspInfo(CThostFtdcRspInfoField* pRspInfo);
 	void ReqLogin( );
-	void ShowOrders();
-	void ShowTrades();
 
 };
 
