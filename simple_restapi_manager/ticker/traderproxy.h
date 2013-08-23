@@ -31,12 +31,13 @@ public:
 	~traderproxy();
 	
 	Trade*	create_trader(const char*, const char*, const char*, const char*);
-	int	remove_trader(const char*);
-	void	show_traders();
+	int		remove_trader(const char*);
 	Trade*	find_trader(const char*);
 public:
 	const char* get_account_info(const char*, const char*, const char*, const char*);
 	const char* get_position_info(const char*, const char*, const char*, const char*);
+	const char*	show_orders(const char *f, const char* b, const char *u,const char* p);
+	const char*	show_trades(const char *f, const char* b, const char *u,const char* p);
 const char*
 order_insert(const char* instrument, const char* price,const char *director, const char *offset, const char *volume
 	, const char* f, const char *b, const char *u, const char *p);

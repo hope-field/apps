@@ -43,8 +43,8 @@ handle_query_accts_restapi( const struct mg_request_info *request_info, void *re
   json_t *json;char *p;
   json_error_t error;
   char user[32], *pass, *broker[32], *front;
-  while((p = strchr(request_info->uri, '/'))) { *p = ' ';}
-  sscanf(request_info->uri, " api 1 brokers %s accts %s", broker, user);
+  //while((p = strchr(request_info->uri, '/'))) { *p = ' ';}
+  sscanf(request_info->uri, "/api/v1/brokers/%4s/accts/%8s", broker, user);
   fprintf(stderr, "user = %s, broker = %s\n", user, broker);
   json = json_loads((char*)request_data, 0, &error);
   if( json ) {
