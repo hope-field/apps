@@ -42,30 +42,63 @@ handle_query_accts_restapi( const struct mg_request_info *request_info, void *re
 // const struct mg_connection *conn = request_info - offsetof(struct mg_connection, request_info); 
   json_t *json;char *p;
   json_error_t error;
-  char user[32], *pass, broker[32], front[128];
-  //while((p = strchr(request_info->uri, '/'))) { *p = ' ';}
+  char user[32], pass[32], broker[32], front[128];
   const char *qs = request_info->query_string;
   mg_get_var(qs, strlen(qs == NULL ? "" : qs), "front", front, sizeof(front));
+  mg_get_var(qs, strlen(qs == NULL ? "" : qs), "pass", pass, sizeof(pass));
   sscanf(request_info->uri, "/api/v1/accts/%4s/%8s", broker, user);
-  fprintf(stderr, "user = %s, broker = %s\n", user, broker);
+  fprintf(stderr, "user = %s, front = %s\n", user, front);
   json = json_loads((char*)request_data, 0, &error);
   if( json ) {
-    json_unpack(json, "{s:s, s:s, s:s, s:s}", "password", &pass);
   }
  
   return get_account_info(front, broker, user, pass);
 }
 
 static char *
+handle_query_orders_restapi( const struct mg_request_info *request_info, void *request_data ) {
+//  const struct mg_connection * conn = (struct mg_connection*)(request_info - ((struct mg_connection*)0)->request_info);
+// const struct mg_connection *conn = request_info - offsetof(struct mg_connection, request_info); 
+  json_t *json;char *p;
+  json_error_t error;
+  char user[32], pass[32], broker[32], front[128];
+  const char *qs = request_info->query_string;
+  mg_get_var(qs, strlen(qs == NULL ? "" : qs), "front", front, sizeof(front));
+  mg_get_var(qs, strlen(qs == NULL ? "" : qs), "pass", pass, sizeof(pass));
+  sscanf(request_info->uri, "/api/v1/accts/%4s/%8s/orders", broker, user);
+  
+  return show_orders(front, broker, user, pass);
+}
+
+static char *
+handle_query_trades_restapi( const struct mg_request_info *request_info, void *request_data ) {
+//  const struct mg_connection * conn = (struct mg_connection*)(request_info - ((struct mg_connection*)0)->request_info);
+// const struct mg_connection *conn = request_info - offsetof(struct mg_connection, request_info); 
+  json_t *json;char *p;
+  json_error_t error;
+  char user[32], pass[32], broker[32], front[128];
+  const char *qs = request_info->query_string;
+  mg_get_var(qs, strlen(qs == NULL ? "" : qs), "front", front, sizeof(front));
+  mg_get_var(qs, strlen(qs == NULL ? "" : qs), "pass", pass, sizeof(pass));
+  sscanf(request_info->uri, "/api/v1/accts/%4s/%8s/trades", broker, user);
+  
+  return show_trades(front, broker, user, pass);
+}
+
+static char *
 handle_query_position_restapi( const struct mg_request_info *request_info, void *request_data ) {
 //  const struct mg_connection * conn = (struct mg_connection*)(request_info - ((struct mg_connection*)0)->request_info);
 // const struct mg_connection *conn = request_info - offsetof(struct mg_connection, request_info); 
-  json_t *json;
+  json_t *json;char *p;
   json_error_t error;
-  char *user, *pass, *broker, *front;
+  char user[32], pass[32], broker[32], front[128];
+  const char *qs = request_info->query_string;
+  mg_get_var(qs, strlen(qs == NULL ? "" : qs), "front", front, sizeof(front));
+  mg_get_var(qs, strlen(qs == NULL ? "" : qs), "pass", pass, sizeof(pass));
+  sscanf(request_info->uri, "/api/v1/accts/%4s/%8s", broker, user);
+  fprintf(stderr, "user = %s, front = %s\n", user, front);
   json = json_loads((char*)request_data, 0, &error);
   if( json ) {
-    json_unpack(json, "{s:s, s:s, s:s, s:s}", "username", &user, "password", &pass, "broker", &broker, "front", &front);
   }
  
   return get_position_info(front, broker, user, pass);
@@ -73,15 +106,18 @@ handle_query_position_restapi( const struct mg_request_info *request_info, void 
 
 static char *
 handle_order_insert_restapi( const struct mg_request_info *request_info, void *request_data ) {
-  json_t *json;
+  json_t *json;char *p;
   json_error_t error;
-  char *user, *pass, *broker, *front;
+  char user[32], pass[32], broker[32], front[128];
   char *instrument, *price, *director, *offset, *volume;
-
+  const char *qs = request_info->query_string;
+  mg_get_var(qs, strlen(qs == NULL ? "" : qs), "front", front, sizeof(front));
+  mg_get_var(qs, strlen(qs == NULL ? "" : qs), "pass", pass, sizeof(pass));
+  sscanf(request_info->uri, "/api/v1/accts/%4s/%8s", broker, user);
+  fprintf(stderr, "user = %s, front = %s\n", user, front);
   json = json_loads((char*)request_data, 0, &error);
   if( json ) {
-    json_unpack(json, "{s:s, s:s, s:s, s:s, s:s, s:s, s:s, s:s, s:s}", "username", &user, "password", &pass,
-	 "broker", &broker, "front", &front, "instrument", &instrument, "price", &price, "director", &director,
+    json_unpack(json, "{s:s, s:s, s:s, s:s, s:s}", "instrument", &instrument, "price", &price, "director", &director,
 	"offset",  &offset, "volume", &volume);
   }
 
@@ -121,8 +157,8 @@ main( int argc, char *argv[] ) {
   add_restapi_url( "^/api/v1/accts/[0-9]+/[0-9]+/position", "GET", handle_query_position_restapi );
   add_restapi_url( "^/api/v1/accts/[0-9]+/[0-9]+/orders", "POST", handle_order_insert_restapi );
   add_restapi_url( "^/api/v1/accts/[0-9]+/[0-9]+/orders/[0-9]+", "DELETE", handle_order_delete_restapi );
-  add_restapi_url( "^/api/v1/accts/[0-9]+/[0-9]+/orders", "GET", handle_order_delete_restapi );
-  add_restapi_url( "^/api/v1/accts/[0-9]+/[0-9]+/trades", "GET", handle_order_delete_restapi );
+  add_restapi_url( "^/api/v1/accts/[0-9]+/[0-9]+/orders", "GET", handle_query_orders_restapi );
+  add_restapi_url( "^/api/v1/accts/[0-9]+/[0-9]+/trades", "GET", handle_query_trades_restapi );
   /*************************/
   
   /* Set switch ready handler */

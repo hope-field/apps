@@ -162,8 +162,6 @@ traderproxy::show_orders(const char *f, const char* b, const char *u,const char*
 	int ret = t->ShowOrders();
 	fprintf(stderr, "@%s\n", __FUNCTION__);
 
-	while (!t->isdone) {}
-
 	return t->buffer;
 }
 
@@ -184,8 +182,6 @@ traderproxy::show_trades(const char *f, const char* b, const char *u,const char*
 
 	int ret = t->ShowTrades();
 	fprintf(stderr, "@%s\n", __FUNCTION__);
-
-	while (!t->isdone) {}
 
 	return t->buffer;
 }
